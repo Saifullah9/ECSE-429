@@ -51,6 +51,7 @@ import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.But;
+import org.junit.BeforeClass;
 
 
 public class CucumberStepDefinitions {
@@ -114,53 +115,112 @@ public void create_priorities() throws IOException, InterruptedException{
     POST("http://localhost:4567/categories") ;// Medium
     POST("http://localhost:4567/categories") ;//  Low
     */
+// creation of categories high medium low
+    String json = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"High\"")   // id is 3
+            .append("}").toString();
 
-//    String json = new StringBuilder()
-//            .append("{")
-//            .append("\"title\":\"priorityHigh\",")
-//            //.append("\"description\":\"hello\"")
-//            .append("}").toString();
-//
-//    HttpRequest request = HttpRequest.newBuilder()
-//            .POST(HttpRequest.BodyPublishers.ofString(json))
-//            .uri(URI.create("http://localhost:4567/categories"))
-//            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
-//            .header("Content-Type", "application/json")
-//            .build();
-//
-//    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-//
-//    String json2 = new StringBuilder()
-//            .append("{")
-//            .append("\"title\":\"priorityMedium\",")
-//            //.append("\"description\":\"hello\"")
-//            .append("}").toString();
-//
-//    HttpRequest request2 = HttpRequest.newBuilder()
-//            .POST(HttpRequest.BodyPublishers.ofString(json2))
-//            .uri(URI.create("http://localhost:4567/categories"))
-//            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
-//            .header("Content-Type", "application/json")
-//            .build();
-//
-//    HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
-//
-//
-//    String json3 = new StringBuilder()
-//            .append("{")
-//            .append("\"title\":\"priorityMedium\",")
-//            //.append("\"description\":\"hello\"")
-//            .append("}").toString();
-//
-//    HttpRequest request3 = HttpRequest.newBuilder()
-//            .POST(HttpRequest.BodyPublishers.ofString(json3))
-//            .uri(URI.create("http://localhost:4567/categories"))
-//            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
-//            .header("Content-Type", "application/json")
-//            .build();
-//
-//    HttpResponse<String> response3 = httpClient.send(request3, HttpResponse.BodyHandlers.ofString());
+    HttpRequest request = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .uri(URI.create("http://localhost:4567/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    String json2 = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"Medium\"") // id is 4
+            .append("}").toString();
+
+    HttpRequest request2 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json2))
+            .uri(URI.create("http://localhost:4567/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+
+
+    String json3 = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"Low\"") // id is 5
+            .append("}").toString();
+
+    HttpRequest request3 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json3))
+            .uri(URI.create("http://localhost:4567/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response3 = httpClient.send(request3, HttpResponse.BodyHandlers.ofString());
     System.out.println(" THIS IS HAPPENING BEFORE EACH SCENARIO");
+
+// ____ Creation for todos__________
+
+    String json4 = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"todotest1\"") // id is 3
+            .append("}").toString();
+
+    HttpRequest request4 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json4))
+            .uri(URI.create("http://localhost:4567/todos"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response4 = httpClient.send(request4, HttpResponse.BodyHandlers.ofString());
+
+    String json5 = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"todotest2\"") // id is 4
+            .append("}").toString();
+
+    HttpRequest request5 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json5))
+            .uri(URI.create("http://localhost:4567/todos"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response5 = httpClient.send(request5, HttpResponse.BodyHandlers.ofString());
+
+    // ____ Creation for projects__________
+
+    String json6 = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"projecttest1\"") // id is 2
+            .append("}").toString();
+
+    HttpRequest request6 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json6))
+            .uri(URI.create("http://localhost:4567/projects"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response6 = httpClient.send(request6, HttpResponse.BodyHandlers.ofString());
+
+    String json7 = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"projecttest1\"") // id is 3
+            .append("}").toString();
+
+    HttpRequest request7 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json7))
+            .uri(URI.create("http://localhost:4567/projects"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response7 = httpClient.send(request7, HttpResponse.BodyHandlers.ofString());
+
+
 }
 
     @After
@@ -283,8 +343,6 @@ public void add_task_to_courses_todo() throws IOException, InterruptedException 
 //     System.out.println(response5.statusCode());
 //    System.out.println(response5.body());
     assertEquals(201 ,response5.statusCode());
-
-
 
 
 
