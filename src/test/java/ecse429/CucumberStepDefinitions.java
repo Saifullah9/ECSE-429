@@ -146,8 +146,8 @@ public void add_task_to_courses_todo() throws IOException, InterruptedException 
    POST("http://localhost:4567/todos/:id/categories"); // create a relation between the course(category) and todolist
 */
     Map<Object, Object> data = new HashMap<>();
-//    data.put("username", "abc");
-//    data.put("password", "123");
+    data.put("title", "abc");
+    data.put("done", "123");
 //    data.put("custom", "secret");
 //    data.put("ts", System.currentTimeMillis());
 
