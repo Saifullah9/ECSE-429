@@ -43,6 +43,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Then;
 import static org.junit.Assert.*;
 import io.cucumber.java.en.Given;
@@ -59,40 +61,40 @@ private static final HttpClient httpClient = HttpClient.newBuilder()
         .version(HttpClient.Version.HTTP_1_1)
         .connectTimeout(Duration.ofSeconds(10))
         .build();
-    public static void send(String mycall) throws IOException, InterruptedException {
+//    public static void send(String mycall) throws IOException, InterruptedException {
+//
+//        HttpRequest request = HttpRequest.newBuilder()
+//                .GET()
+//                .uri(URI.create(mycall))
+//                .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+//                .build();
+//
+//        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+//
+//        // print response headers
+//        HttpHeaders headers = response.headers();
+//        headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
+//
+//        // print status code
+//        System.out.println(response.statusCode());
+//
+//        // print response body
+//        System.out.println(response.body());
+//
+//    }
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .GET()
-                .uri(URI.create(mycall))
-                .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
-                .build();
-
-        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-        // print response headers
-        HttpHeaders headers = response.headers();
-        headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
-
-        // print status code
-        System.out.println(response.statusCode());
-
-        // print response body
-        System.out.println(response.body());
-
-    }
-
-    public static HttpRequest.BodyPublisher ofFormData(Map<Object, Object> data) {
-        var builder = new StringBuilder();
-        for (Map.Entry<Object, Object> entry : data.entrySet()) {
-            if (builder.length() > 0) {
-                builder.append("&");
-            }
-            builder.append(URLEncoder.encode(entry.getKey().toString(), StandardCharsets.UTF_8));
-            builder.append("=");
-            builder.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
-        }
-        return HttpRequest.BodyPublishers.ofString(builder.toString());
-    }
+//    public static HttpRequest.BodyPublisher ofFormData(Map<Object, Object> data) {
+//        var builder = new StringBuilder();
+//        for (Map.Entry<Object, Object> entry : data.entrySet()) {
+//            if (builder.length() > 0) {
+//                builder.append("&");
+//            }
+//            builder.append(URLEncoder.encode(entry.getKey().toString(), StandardCharsets.UTF_8));
+//            builder.append("=");
+//            builder.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
+//        }
+//        return HttpRequest.BodyPublishers.ofString(builder.toString());
+//    }
 
 
 ///////end of extra for adding and testin
@@ -101,34 +103,73 @@ private static final HttpClient httpClient = HttpClient.newBuilder()
 
 @Given("I am a student")
 public void I_am_a_student() throws IOException, InterruptedException {
-
-    // we are all students so no need fo the function
-    HttpRequest request = HttpRequest.newBuilder()
-            .GET()
-            .uri(URI.create("http://localhost:4567/todos"))
-            //.setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
-            .build();
-
-    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-    // print response headers
-    HttpHeaders headers = response.headers();
-    headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
-
-    // print status code
-    System.out.println(response.statusCode());
-
-    // print response body
-    System.out.println(response.body());
+// we are all students already
     assertSame(1,1);
 }
 
-//public void create_priorities(){
-//    POST("http://localhost:4567/categories") ;// High
-//    POST("http://localhost:4567/categories") ;// Medium
-//    POST("http://localhost:4567/categories") ;//  Low
-//}
+@Before
+public void create_priorities() throws IOException, InterruptedException{
+   /* refrence
+    POST("http://localhost:4567/categories") ;// High
+    POST("http://localhost:4567/categories") ;// Medium
+    POST("http://localhost:4567/categories") ;//  Low
+    */
+
+//    String json = new StringBuilder()
+//            .append("{")
+//            .append("\"title\":\"priorityHigh\",")
+//            //.append("\"description\":\"hello\"")
+//            .append("}").toString();
 //
+//    HttpRequest request = HttpRequest.newBuilder()
+//            .POST(HttpRequest.BodyPublishers.ofString(json))
+//            .uri(URI.create("http://localhost:4567/categories"))
+//            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+//            .header("Content-Type", "application/json")
+//            .build();
+//
+//    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+//
+//    String json2 = new StringBuilder()
+//            .append("{")
+//            .append("\"title\":\"priorityMedium\",")
+//            //.append("\"description\":\"hello\"")
+//            .append("}").toString();
+//
+//    HttpRequest request2 = HttpRequest.newBuilder()
+//            .POST(HttpRequest.BodyPublishers.ofString(json2))
+//            .uri(URI.create("http://localhost:4567/categories"))
+//            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+//            .header("Content-Type", "application/json")
+//            .build();
+//
+//    HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+//
+//
+//    String json3 = new StringBuilder()
+//            .append("{")
+//            .append("\"title\":\"priorityMedium\",")
+//            //.append("\"description\":\"hello\"")
+//            .append("}").toString();
+//
+//    HttpRequest request3 = HttpRequest.newBuilder()
+//            .POST(HttpRequest.BodyPublishers.ofString(json3))
+//            .uri(URI.create("http://localhost:4567/categories"))
+//            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+//            .header("Content-Type", "application/json")
+//            .build();
+//
+//    HttpResponse<String> response3 = httpClient.send(request3, HttpResponse.BodyHandlers.ofString());
+    System.out.println(" THIS IS HAPPENING BEFORE EACH SCENARIO");
+}
+
+    @After
+    public void del_priorities() throws IOException, InterruptedException{
+
+        System.out.println(" THIS IS HAPPENING AFTER EACH SCENARIO");
+    }
+
+
 ////___________________________________add_a_task_to_a_course's_todo_list__________________________________________________
 //
 //
@@ -137,38 +178,112 @@ public void I_am_a_student() throws IOException, InterruptedException {
 public void add_task_to_courses_todo() throws IOException, InterruptedException {
 
 /* refrence
-   POST("http://localhost:4567/todos");// create a todolist
-   POST("http://localhost:4567/projects");// creata task(project)      ADD PARAMTERS IN THE REQUEST NOT LEAVE EMPTY
+   POST("http://localhost:4567/todos"); // create a todolist
+   POST("http://localhost:4567/projects"); // creata task(project)      ADD PARAMTERS IN THE REQUEST NOT LEAVE EMPTY
    POST("http://localhost:4567/categories/");// create a course (category)
 
 
    POST("http://localhost:4567/todos/:id/tasksof"); // create a relation between the task(project) and todolist
    POST("http://localhost:4567/todos/:id/categories"); // create a relation between the course(category) and todolist
 */
-    Map<Object, Object> data = new HashMap<>();
-    data.put("title", "abc");
-    data.put("done", "123");
-//    data.put("custom", "secret");
-//    data.put("ts", System.currentTimeMillis());
+
+    //POST("http://localhost:4567/todos"); // create a todolist
+    String json = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"mkyong\",")
+            .append("\"description\":\"hello\"")
+            .append("}").toString();
 
     HttpRequest request = HttpRequest.newBuilder()
-            .POST(ofFormData(data))
+            .POST(HttpRequest.BodyPublishers.ofString(json))
             .uri(URI.create("http://localhost:4567/todos"))
-            //.setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
             .build();
 
     HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+ //  System.out.println(response.statusCode());
+    assertEquals(201 ,response.statusCode());
 
-    // print response headers
-    HttpHeaders headers = response.headers();
-    headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
-    System.out.println(response.statusCode());
 
-    // print response body
-    System.out.println(response.body());
+//POST("http://localhost:4567/projects"); // creata task(project)      ADD PARAMTERS IN THE REQUEST NOT LEAVE EMPTY
+    String json2 = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"proj\",")
+            .append("\"description\":\"hello\"")
+            .append("}").toString();
 
-    // print status code
-    assertEquals(1,1);
+    HttpRequest request2 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json2))
+            .uri(URI.create("http://localhost:4567/projects"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+ //   System.out.println(response.statusCode());
+    assertEquals(201 ,response2.statusCode());
+
+
+    //POST("http://localhost:4567/categories/");// create a course (category)
+    String json3 = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"priority\",")
+            .append("\"description\":\"hello\"")
+            .append("}").toString();
+
+    HttpRequest request3 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json3))
+            .uri(URI.create("http://localhost:4567/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response3 = httpClient.send(request3, HttpResponse.BodyHandlers.ofString());
+//     System.out.println(response.statusCode());
+//    System.out.println(response.body().substring(1,10));
+    assertEquals(201 ,response3.statusCode());
+
+
+    //POST("http://localhost:4567/todos/:id/tasksof"); // create a relation between the task(project) and todolist
+    String json4 = new StringBuilder()
+            .append("{")
+            .append(response2.body().substring(1,10))
+            .append("}").toString();
+
+    HttpRequest request4 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json4))
+            .uri(URI.create("http://localhost:4567/todos/13/tasksof"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response4 = httpClient.send(request4, HttpResponse.BodyHandlers.ofString());
+//    System.out.println(response4.statusCode());
+//    System.out.println(response4.body());
+    assertEquals(201 ,response4.statusCode());
+
+    //POST("http://localhost:4567/todos/:id/categories"); // create a relation between the course(category) and todolist
+    String json5 = new StringBuilder()
+            .append("{")
+            .append(response3.body().substring(1,10)) // THE ID
+            .append("}").toString();
+
+//    System.out.println(response3.body().substring(1,10));
+
+
+    HttpRequest request5 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json5))
+            .uri(URI.create("http://localhost:4567/todos/13/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response5 = httpClient.send(request5, HttpResponse.BodyHandlers.ofString());
+//     System.out.println(response5.statusCode());
+//    System.out.println(response5.body());
+    assertEquals(201 ,response5.statusCode());
+
 
 
 
@@ -176,87 +291,336 @@ public void add_task_to_courses_todo() throws IOException, InterruptedException 
 }
 //
 ////Treat todos as todo list, project as tasks, categories as priorities and course
-//@When("I add an empty task to a course’s todo list")
-//public void add_emptyTask_to_courses_todo(){
+@When("I add an empty task to a course todo list")
+public void add_emptyTask_to_courses_todo() throws IOException, InterruptedException{
+
+
+/* refrence
+   POST("http://localhost:4567/todos"); // create a todolist
+   POST("http://localhost:4567/projects"); // creata task(project)      ADD PARAMTERS IN THE REQUEST NOT LEAVE EMPTY
+   POST("http://localhost:4567/categories/");// create a course (category)
+
+
+   POST("http://localhost:4567/todos/:id/tasksof"); // create a relation between the task(project) and todolist
+   POST("http://localhost:4567/todos/:id/categories"); // create a relation between the course(category) and todolist
+*/
+
+    //POST("http://localhost:4567/todos"); // create a todolist
+    String json = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"mkyong\",")
+            .append("\"description\":\"hello\"")
+            .append("}").toString();
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .uri(URI.create("http://localhost:4567/todos"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    //  System.out.println(response.statusCode());
+    assertEquals(201 ,response.statusCode());
+
+
+//POST("http://localhost:4567/projects"); // creata task(project)      ADD PARAMTERS IN THE REQUEST NOT LEAVE EMPTY
+    String json2 = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"proj\",")
+            .append("\"description\":\"hello\"")
+            .append("}").toString();
+
+    HttpRequest request2 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json2))
+            .uri(URI.create("http://localhost:4567/projects"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+    //   System.out.println(response.statusCode());
+    assertEquals(201 ,response2.statusCode());
+
+
+    //POST("http://localhost:4567/categories/");// create a course (category)
+    String json3 = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"priority\",")
+            .append("\"description\":\"hello\"")
+            .append("}").toString();
+
+    HttpRequest request3 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json3))
+            .uri(URI.create("http://localhost:4567/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response3 = httpClient.send(request3, HttpResponse.BodyHandlers.ofString());
+//     System.out.println(response.statusCode());
+//    System.out.println(response.body().substring(1,10));
+    assertEquals(201 ,response3.statusCode());
+
+
+    //POST("http://localhost:4567/todos/:id/tasksof"); // create a relation between the task(project) and todolist
+    String json4 = new StringBuilder()
+            .append("{")
+            .append(response2.body().substring(1,10))
+            .append("}").toString();
+
+    HttpRequest request4 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json4))
+            .uri(URI.create("http://localhost:4567/todos/13/tasksof"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response4 = httpClient.send(request4, HttpResponse.BodyHandlers.ofString());
+//    System.out.println(response4.statusCode());
+//    System.out.println(response4.body());
+    assertEquals(201 ,response4.statusCode());
+
+    //POST("http://localhost:4567/todos/:id/categories"); // create a relation between the course(category) and todolist
+    String json5 = new StringBuilder()
+            .append("{")
+            .append(response3.body().substring(1,10)) // THE ID
+            .append("}").toString();
+
+//    System.out.println(response3.body().substring(1,10));
+
+
+    HttpRequest request5 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json5))
+            .uri(URI.create("http://localhost:4567/todos/13/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response5 = httpClient.send(request5, HttpResponse.BodyHandlers.ofString());
+//     System.out.println(response5.statusCode());
+//    System.out.println(response5.body());
+    assertEquals(201 ,response5.statusCode());
+
+
+
+
+
+
+}
+
+//
+@Then("I should successfully add a task to a course todo list")
+public void confirm_task_to_todo_to_course() throws IOException, InterruptedException{
+/* refrence
+    GET("http://localhost:4567/todos/:id/categories");
+    GET("http://localhost:4567/todos/:id/tasksof");
+*/
+    HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create("http://localhost:4567/todos/13/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    // print status code
+//    System.out.println(response.statusCode());
+    // print response body
+//  System.out.println(response.body());
+
+    assertSame(200,response.statusCode());
+
+
+    HttpRequest request2 = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create("http://localhost:4567/todos/:id/tasksof"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .build();
+
+    HttpResponse<String> response2 = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    // print status code
+//    System.out.println(response.statusCode());
+    // print response body
+//  System.out.println(response.body());
+
+    assertSame(200,response2.statusCode());
+}
+//
+@And("that task has a priority associated with it")
+public void add_priority_to_task()  throws IOException, InterruptedException{
+  //  POST("http://localhost:4567/categories") // High
+  //  POST("http://localhost:4567/categories") // Medium
+  //  POST("http://localhost:4567/categories") //  Low
+
+   // POST("http://localhost:4567/projects/:id/categories") ;// ADD PARAMTER ID FOR CATEGORY
+
+    String json = new StringBuilder()
+            .append("{")
+            .append("\"id\":\"1\"") // THE ID
+            .append("}").toString();
+
+//    System.out.println(response3.body().substring(1,10));
+
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .uri(URI.create("http://localhost:4567/todos/13/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+//     System.out.println(response.statusCode());
+//    System.out.println(response.body());
+    assertEquals(201 ,response.statusCode());
+
+
+
+}
 //
 //
-//   POST("http://localhost:4567/todos"); // create a todolist
-//   POST("http://localhost:4567/projects"); // create task(project)      DO NOT ADD PARAMTERS IN THE REQUEST ,so  LEAVE EMPTY
-//   POST("http://localhost:4567/categories/"); // create a course (category)
-//
-//
-//   POST("http://localhost:4567/todos/:id/tasksof"); // create a relation between the task(project) and todolist
-//   POST("http://localhost:4567/todos/:id/categories"); // create a relation between the course(category) and todolist parameter must be valid
-//
-//}
-//
-//@And("I enter all the required fields with valid input") // maybe remove this
-//public void check_Task_info_to_courses_todo(){
-//
-//  //  write any assertion here like check description
-//
-//}
-//
-//@Then("I should receive a confirmation message")
-//public void confirm_task_to_todo_to_course(){
-//
-//    GET("http://localhost:4567/todos/:id/categories");
-//    GET("http://localhost:4567/todos/:id/tasksof");
-//
-//    assert(status codes of both gets);
-//}
-//
-//@Then("a task with the default settings should be created")
-//public void confirm_emptytask_to_todo_to_course(){
-//
-//    GET("http://localhost:4567/todos/:id/categories");
-//    GET("http://localhost:4567/todos/:id/tasksof");
-//
-//    assert(status codes of both gets)
-//}
-//
-//@And("that task has a priority associated with it")
-//public void add_priority_to_task(){
-//  //  POST("http://localhost:4567/categories") // High
-//  //  POST("http://localhost:4567/categories") // Medium
-//  //  POST("http://localhost:4567/categories") //  Low
-//
-//    POST("http://localhost:4567/projects/:id/categories") ;// ADD PARAMTER ID FOR CATEGORY
-//}
-//
-//
-//@When("I request to add a task to a non-existing course")
-//public void task_to_no_course(){
+@When("I request to add a task to a non existing course")
+public void task_to_no_course() throws IOException, InterruptedException{
 //   POST("http://localhost:4567/todos") ;// create a todolist
 //   POST("http://localhost:4567/projects") ;// creata task(project)      DO NOT ADD PARAMTERS IN THE REQUEST ,so  LEAVE EMPTY
 //
 //   POST("http://localhost:4567/todos/:id/tasksof") ;// create a relation between the task(project) and todolist
 //   POST("http://localhost:4567/todos/:id/categories"); // create a relation between the course(category) and todolist parameter must be invalid
-//
-//}
-//
-//@Then("I should receive an error message")
-//public void recieve_error(){
-//    GET("http://localhost:4567/todos/:id/categories");
-//    GET("http://localhost:4567/todos/:id/tasksof");
-//
-//    assert(status codes of both gets) // must fail or succeed?
-//}
+
+    //POST("http://localhost:4567/todos"); // create a todolist
+    String json = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"mkyong\",")
+            .append("\"description\":\"hello\"")
+            .append("}").toString();
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .uri(URI.create("http://localhost:4567/todos"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    //  System.out.println(response.statusCode());
+    assertEquals(201 ,response.statusCode());
+
+
+//POST("http://localhost:4567/projects"); // creata task(project)      ADD PARAMTERS IN THE REQUEST NOT LEAVE EMPTY
+    String json2 = new StringBuilder()
+            .append("{")
+            .append("\"title\":\"proj\",")
+            .append("\"description\":\"hello\"")
+            .append("}").toString();
+
+    HttpRequest request2 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json2))
+            .uri(URI.create("http://localhost:4567/projects"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+    //   System.out.println(response.statusCode());
+    assertEquals(201 ,response2.statusCode());
+
+
+    //POST("http://localhost:4567/todos/:id/tasksof"); // create a relation between the task(project) and todolist
+    String json4 = new StringBuilder()
+            .append("{")
+            .append(response2.body().substring(1,10))
+            .append("}").toString();
+
+    HttpRequest request4 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json4))
+            .uri(URI.create("http://localhost:4567/todos/13/tasksof"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response4 = httpClient.send(request4, HttpResponse.BodyHandlers.ofString());
+//    System.out.println(response4.statusCode());
+//    System.out.println(response4.body());
+    assertEquals(201 ,response4.statusCode());
+
+    //POST("http://localhost:4567/todos/:id/categories"); // create a relation between the course(category) and todolist
+    String json5 = new StringBuilder()
+            .append("{")
+            .append("\"id\":\"-1\"") // THE ID is WRONG FOR TESTING
+            .append("}").toString();
+
+//    System.out.println(response3.body().substring(1,10));
+
+
+    HttpRequest request5 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json5))
+            .uri(URI.create("http://localhost:4567/todos/13/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response5 = httpClient.send(request5, HttpResponse.BodyHandlers.ofString());
+//     System.out.println(response5.statusCode());
+//    System.out.println(response5.body());
+    assertNotEquals(201 ,response5.statusCode());
+
+
+
+}
+
+@Then("I should receive an error message about adding a task to a course todo list")
+public void recieve_error() throws IOException, InterruptedException{
+  //  GET("http://localhost:4567/todos/:id/categories");
+  //  GET("http://localhost:4567/todos/:id/tasksof");
+    HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create("http://localhost:4567/todos/13/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    // print status code
+//    System.out.println(response.statusCode());
+    // print response body
+//  System.out.println(response.body());
+
+    assertNotEquals(200,response.statusCode());
+
+
+    HttpRequest request2 = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create("http://localhost:4567/todos/:id/tasksof"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .build();
+
+    HttpResponse<String> response2 = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    // print status code
+//    System.out.println(response.statusCode());
+    // print response body
+//  System.out.println(response.body());
+
+    assertNotEquals(200,response2.statusCode());
+
+}
 //
 //// REMEBER TO RESET DATABASE PROCEDURE
 //
 ////___________________________________Categorize_task_priority__________________________________________________
 //
 ////todo is the task, category is the priority,project is the course
-@When("I change a task’s priority")
-public void change_task_priority(){
-  //  POST("http://localhost:4567/categories") // High
-  //  POST("http://localhost:4567/categories") // Medium
-  //  POST("http://localhost:4567/categories") //  Low
-
-    POST("http://localhost:4567/projects"); // creata task(project)
-    POST("http://localhost:4567/projects/:id/categories"); // relationship between category and todo Add paramater for category
-}
+//@When("I change a task’s priority")
+//public void change_task_priority(){
+//  //  POST("http://localhost:4567/categories") // High
+//  //  POST("http://localhost:4567/categories") // Medium
+//  //  POST("http://localhost:4567/categories") //  Low
+//
+//    POST("http://localhost:4567/projects"); // creata task(project)
+//    POST("http://localhost:4567/projects/:id/categories"); // relationship between category and todo Add paramater for category
+//}
 
 //@Then("I should receive a confirmation message")   //change this
 //public void confirm_task_priority(){
