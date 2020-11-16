@@ -9,6 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.Timer;
+import io.cucumber.java.en.Then;
+import static org.junit.Assert.*;
+import io.cucumber.java.en.Given;
+import io.cucumber.java.en.When;
+import io.cucumber.java.en.And;
+import io.cucumber.java.en.But;
+
 
 public class CucumberStepDefinitions {
     // the  testsss foorr noowwww
