@@ -6,7 +6,7 @@ Feature: Add_a_task_to_a_course’s_todo_list
     #Normal Flow
     Scenario: Successfully add a task to a course’s todo list
         Given I am a student
-        When I add a task to a course’s todo list
+        When I add a task to a course todo list
         And I enter all the required fields with valid input
         Then I should receive a confirmation message
 

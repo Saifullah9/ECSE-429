@@ -1,5 +1,14 @@
 package ecse429;
-
+import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 import java.net.URI;
 import java.net.URLEncoder;
 import java.net.http.HttpClient;
@@ -72,7 +81,18 @@ private static final HttpClient httpClient = HttpClient.newBuilder()
 
     }
 
-
+    public static HttpRequest.BodyPublisher ofFormData(Map<Object, Object> data) {
+        var builder = new StringBuilder();
+        for (Map.Entry<Object, Object> entry : data.entrySet()) {
+            if (builder.length() > 0) {
+                builder.append("&");
+            }
+            builder.append(URLEncoder.encode(entry.getKey().toString(), StandardCharsets.UTF_8));
+            builder.append("=");
+            builder.append(URLEncoder.encode(entry.getValue().toString(), StandardCharsets.UTF_8));
+        }
+        return HttpRequest.BodyPublishers.ofString(builder.toString());
+    }
 
 
 ///////end of extra for adding and testin
@@ -112,20 +132,48 @@ public void I_am_a_student() throws IOException, InterruptedException {
 ////___________________________________add_a_task_to_a_course's_todo_list__________________________________________________
 //
 //
-////Treat todos as todo list, project as tasks, categories as priorities and course
-//@When("I add a task to a course’s todo list")
-//public void add_task_to_courses_todo() {
-//
-//
-//   POST("http://localhost:4567/todos");// create a todolist
-//   POST("http://localhost:4567/projects");// creata task(project)      ADD PARAMTERS IN THE REQUEST NOT LEAVE EMPTY
-//   POST("http://localhost:4567/categories/");// create a course (category)
-//
-//
-//   POST("http://localhost:4567/todos/:id/tasksof"); // create a relation between the task(project) and todolist
-//   POST("http://localhost:4567/todos/:id/categories"); // create a relation between the course(category) and todolist
-//
-//}
+//Treat todos as todo list, project as tasks, categories as priorities and course
+@When("I add a task to a course todo list")
+public void add_task_to_courses_todo() throws IOException, InterruptedException {
+
+/* refrence
+   POST("http://localhost:4567/todos");// create a todolist
+   POST("http://localhost:4567/projects");// creata task(project)      ADD PARAMTERS IN THE REQUEST NOT LEAVE EMPTY
+   POST("http://localhost:4567/categories/");// create a course (category)
+
+
+   POST("http://localhost:4567/todos/:id/tasksof"); // create a relation between the task(project) and todolist
+   POST("http://localhost:4567/todos/:id/categories"); // create a relation between the course(category) and todolist
+*/
+    Map<Object, Object> data = new HashMap<>();
+//    data.put("username", "abc");
+//    data.put("password", "123");
+//    data.put("custom", "secret");
+//    data.put("ts", System.currentTimeMillis());
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .POST(ofFormData(data))
+            .uri(URI.create("http://localhost:4567/todos"))
+            //.setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    // print response headers
+    HttpHeaders headers = response.headers();
+    headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
+    System.out.println(response.statusCode());
+
+    // print response body
+    System.out.println(response.body());
+
+    // print status code
+    assertEquals(1,1);
+
+
+
+
+}
 //
 ////Treat todos as todo list, project as tasks, categories as priorities and course
 //@When("I add an empty task to a course’s todo list")
@@ -133,7 +181,7 @@ public void I_am_a_student() throws IOException, InterruptedException {
 //
 //
 //   POST("http://localhost:4567/todos"); // create a todolist
-//   POST("http://localhost:4567/projects"); // creata task(project)      DO NOT ADD PARAMTERS IN THE REQUEST ,so  LEAVE EMPTY
+//   POST("http://localhost:4567/projects"); // create task(project)      DO NOT ADD PARAMTERS IN THE REQUEST ,so  LEAVE EMPTY
 //   POST("http://localhost:4567/categories/"); // create a course (category)
 //
 //
@@ -288,12 +336,33 @@ public void I_am_a_student() throws IOException, InterruptedException {
 //    POST("http://localhost:4567/projects/:id/categories"); // add invalid param
 //}
 //
-//@Then("I should receive an error message")   //change this
-//public void recieve_error_task_prio(){
-//
-//   GET("http://localhost:4567/projects/:id/categories");
-//    assert(status codes of get)
-//}
+@Then("I should receive an error message")   //change this
+public void recieve_error_task_prio() throws IOException, InterruptedException {
+/* refrence
+
+   GET("http://localhost:4567/projects/:id/categories");
+    assert(status codes of get)
+
+*/
+    HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create("http://localhost:4567/projects/:1/categories"))
+            //.setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+    // print response headers
+    HttpHeaders headers = response.headers();
+    headers.map().forEach((k, v) -> System.out.println(k + ":" + v));
+
+    // print status code
+    System.out.println(response.statusCode());
+
+    // print response body
+    System.out.println(response.body());
+    assertSame(1,1);
+}
 //
 //@When("I request to change the priority of a task which does not exist")
 //public void asscociate_priority_with_no_task(){
