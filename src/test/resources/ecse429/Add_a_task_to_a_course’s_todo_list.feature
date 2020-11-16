@@ -20,7 +20,7 @@ Feature: Add_a_task_to_a_course’s_todo_list
     #Alternate flow
     Scenario: Add a task with a priority to a course’s todo list
         Given I am a student
-        When I add a task to a course’s todo list
+        When I add a task to a course todo list
         And that task has a priority associated with it
         Then I should receive a confirmation message
 

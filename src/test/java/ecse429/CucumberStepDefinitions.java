@@ -248,16 +248,16 @@ public void add_task_to_courses_todo() throws IOException, InterruptedException 
 ////___________________________________Categorize_task_priority__________________________________________________
 //
 ////todo is the task, category is the priority,project is the course
-//@When("I change a task’s priority")
-//public void change_task_priority(){
-//  //  POST("http://localhost:4567/categories") // High
-//  //  POST("http://localhost:4567/categories") // Medium
-//  //  POST("http://localhost:4567/categories") //  Low
-//
-//    POST("http://localhost:4567/projects"); // creata task(project)
-//    POST("http://localhost:4567/projects/:id/categories"); // relationship between category and todo Add paramater for category
-//}
-//
+@When("I change a task’s priority")
+public void change_task_priority(){
+  //  POST("http://localhost:4567/categories") // High
+  //  POST("http://localhost:4567/categories") // Medium
+  //  POST("http://localhost:4567/categories") //  Low
+
+    POST("http://localhost:4567/projects"); // creata task(project)
+    POST("http://localhost:4567/projects/:id/categories"); // relationship between category and todo Add paramater for category
+}
+
 //@Then("I should receive a confirmation message")   //change this
 //public void confirm_task_priority(){
 //
