@@ -246,6 +246,14 @@ public void del_priorities() throws IOException, InterruptedException{
             .header("Content-Type", "application/json")
             .build();
 
+
+    //categories -> projects
+    HttpRequest request6 = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create("http://localhost:4567/categoriess/3/projects/2"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
     }
 
 ////___________________________________add_a_task_to_a_course's_todo_list__________________________________________________
@@ -986,7 +994,7 @@ public void recieve_error_marked_complete() throws IOException, InterruptedExcep
 
 ////___________________________________Query_all_incomplete_HIGH_priority_tasks_of_all_classes____________________________
 //
-////category is priority, task is project , todo is class
+////category is priority, project is task , todo is class
 //
 @When("I query all incomplete HIGH priority tasks of all classes")
 public void query_incomplete_high_priority_tasks_of_classes() throws IOException, InterruptedException {
@@ -1023,7 +1031,6 @@ public void query_incomplete_high_priority_tasks_of_classes() throws IOException
 
 }
 
-
 @Then("I should receive a list of the incomplete HIGH priority tasks of all my classes")
 public void confirm_the_query_list() throws IOException, InterruptedException {
 
@@ -1039,113 +1046,494 @@ public void confirm_the_query_list() throws IOException, InterruptedException {
     assertEquals(200 ,response2.statusCode());
 }
 
-//@But("no incomplete HIGH priority tasks exist")
-//public void no_high_tasks(){
-//
-//    GET("http://localhost:4567/categories/:id/projects");;   // the param will be another prio for example where no tasks are associated
-//}
-//
-//
-//@Then("I should receive a message saying it’s empty")
-//public void confirm_alternate_query_list() throws IOException, InterruptedException {
-//     GET("http://localhost:4567/categories/:id/projects");
-//     assert(thelist and status code);
-//}
-//
-//@But("there are no classes")
-//public void task_not_with_a_class_for_query() throws IOException, InterruptedException {
-//
-//    POST("http://localhost:4567/todos/:id/tasksof") ;// relation between class(todo) and task(project) add invalid param for class
-//    POST("http://localhost:4567/projects/:id/categories");
-//}
-//
-//@Then("I should receive an error message")
-//public void recieve_error_for_query_task_no_class() throws IOException, InterruptedException {
-//
-//     GET("http://localhost:4567/categories/:id/projects");
-//     assert(thelist and status code);
-//
-//}
+@But("no incomplete HIGH priority tasks exist")
+public void no_high_tasks() throws IOException, InterruptedException{
+
+    //    GET("http://localhost:4567/categories/:id/projects");
+    HttpRequest request2 = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create("http://localhost:4567/categories/4/projects"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+    assertEquals(200 ,response2.statusCode());
+}
+
+@But("there are no classes")
+public void task_not_with_a_class_for_query() throws IOException, InterruptedException {
+
+   // POST("http://localhost:4567/todos/:id/tasksof") ;// relation between class(todo) and task(project) add invalid param for class
+    String json = new StringBuilder()
+            .append("{")
+            .append("\"id\":\"2\"")
+            .append("}").toString();
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .uri(URI.create("http://localhost:4567/todos/-1/tasksof"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    assertNotEquals(201 ,response.statusCode());
+}
+
+@Then("I should receive an error message about query of high priority tasks")
+public void recieve_error_for_query_task_no_class() throws IOException, InterruptedException {
+    String json = new StringBuilder()
+            .append("{")
+            .append("\"id\":\"2\"")
+            .append("}").toString();
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .uri(URI.create("http://localhost:4567/todos/-1/tasksof"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    assertNotEquals(200 ,response.statusCode());
+}
 
 ////___________________________________Query_the_incomplete_tasks_of_a_class__________________________________________________
+////category is priority, task is project , todo is class
 //
-//
-//
-//
-//
-//
+@When("I query the incomplete tasks of a class")
+public void query_incomplete_tasks_of_classes() throws IOException, InterruptedException {
+
+//    POST("http://localhost:4567/categories/:id/projects"); //relation between task(project) and priority(category) add param
+    String json = new StringBuilder()
+            .append("{")
+            .append("\"id\":\"2\"")
+            .append("}").toString();
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .uri(URI.create("http://localhost:4567/categories/3/projects"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    System.out.println(response.body());
+    assertEquals(201 ,response.statusCode());
+
+
+//    GET("http://localhost:4567/categories/:id/projects");
+    HttpRequest request2 = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create("http://localhost:4567/categories/3/projects"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+    assertEquals(200 ,response2.statusCode());
+
+
+}
+
+@Then("I should receive a list of incomplete tasks")
+public void confirm_the_query_list_of_incomplete_tasks() throws IOException, InterruptedException {
+        HttpRequest request2 = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:4567/todos/3/tasksof"))    // PUT ID HERE
+                .setHeader("User-Agent", "Java 11 HttpClient Bot")
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200 ,response2.statusCode());
+    }
+
+@Then ("I should receive a message saying no incomplete tasks left")
+public void confirm_the_query_empty_list_of_incomplete_tasks() throws IOException, InterruptedException {
+        HttpRequest request2 = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:4567/todos/3/tasksof"))    // PUT ID HERE
+                .setHeader("User-Agent", "Java 11 HttpClient Bot")
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200 ,response2.statusCode());
+    }
+
+@And("there are no incomplete tasks left")
+public void no_incomplete_left_for_query() throws IOException, InterruptedException {
+
+        // POST("http://localhost:4567/todos/:id/tasksof") ;// relation between class(todo) and task(project) add invalid param for class
+    HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:4567/todos/4/tasksof"))    // PUT ID HERE
+                .setHeader("User-Agent", "Java 11 HttpClient Bot")
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200 ,response.statusCode());
+    }
+
+@But("the tasks do not exist")
+public void task_none_for_query() throws IOException, InterruptedException {
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create("http://localhost:4567/projects/-1"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    assertNotEquals(200 ,response.statusCode());
+}
+
+@Then("I should receive an error message about querying all incomplete tasks of a class")
+public void recieve_error_for_query_no_tasks() throws IOException, InterruptedException {
+    HttpRequest request = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create("http://localhost:4567/todos/-1"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    assertNotEquals(200 ,response.statusCode());
+}
+
+
 ////___________________________________Remove_a_todo_list_of_a_class__________________________________________________
 //// todo is todolist,category is priority, projects is class
 //
-//@When("I remove a todo list of a class")
-//public void remove_todo_of_class() throws IOException, InterruptedException {
-//   POST("http://localhost:4567/todos"); // create a todolist
-//   POST("http://localhost:4567/projects"); // create a class(project)
-//
-//   POST("http://localhost:4567/project/:id/tasks"); // create a relation between the class(project) and todolist add params
-//  // POST("http://localhost:4567/todos/:id/categories") // create a relation between the priority(category) and todolist parameter must be valid
-//
-//
-//   DELETE("http://localhost:4567/project/:id/tasks/:id"); // delete  relation between the class(project) and todolist add params
-//   DELETE("http://localhost:4567/todos/:id"); // delete a todolist
-//   // POST("http://localhost:4567/todos/:id/categories") // create a relation between the priority(category) and todolist parameter must be valid
-//
-//
-//
-//}
-//
-//@When("I remove a categorized todo list of a  class")
-//public void remove_todo_of_a_categorized_class() throws IOException, InterruptedException {
-//   POST("http://localhost:4567/todos"); // create a todolist
-//   POST("http://localhost:4567/projects"); // create a class(project)
-//
-//   POST("http://localhost:4567/project/:id/tasks"); // create a relation between the class(project) and todolist add params
-//   POST("http://localhost:4567/todos/:id/categories"); // create a relation between the priority(category) and todolist parameter must be valid
-//
-//
-//   DELETE("http://localhost:4567/project/:id/tasks/:id"); // delete  relation between the class(project) and todolist add params
-//   DELETE("http://localhost:4567/todos/:id/categories/:id"); // delete relation between the priority(category) and todolist parameter must be valid
-//
-//   DELETE("http://localhost:4567/todos/:id"); // delete a todolist
-//
-//
-//
-//}
-//
-//@Then("I should receive a confirmation message") //change this
-//public void confirmlist_is_removed() throws IOException, InterruptedException {
-//
-//GET("http://localhost:4567/todos/:id");
-//
-//assert(check status of get);
-//
-//}
-//
-//@When("I remove a todo list of a class which doesn’t exist")
-//public void remove_todo_of_none_class() throws IOException, InterruptedException {
-//   POST("http://localhost:4567/todos") ;// create a todolist
-//   POST("http://localhost:4567/project/:id/tasks"); // create a relation between the class(project) and todolist add invalid params
-//   POST("http://localhost:4567/todos/:id/categories"); // create a relation between the priority(category) and todolist parameter must be valid
-//
-//
-//   DELETE("http://localhost:4567/project/:id/tasks/:id") ;// delete  relation between the class(project) and todolist add params
-//   DELETE("http://localhost:4567/todos/:id/categories/:id") ;// delete relation between the priority(category) and todolist parameter must be valid
-//   DELETE("http://localhost:4567/todos/:id") ;// delete a todolist
-//
-//}
-//
-//
-//@Then("I should receive an error message")
-//public void recieve_error_for_remove_todolist_class() throws IOException, InterruptedException {
-//
-//  GET("http://localhost:4567/todos/:id");
-//
-//assert(check status of get);
-//
-//}
+@When("I remove a todo list of a class")
+public void remove_todo_of_class() throws IOException, InterruptedException {
+   // POST("http://localhost:4567/project/:id/tasks"); // create a relation between the class(project) and todolist add params
+    String json = new StringBuilder()
+            .append("{")
+            .append("\"id\":\"3\"")
+            .append("}").toString();
 
+    HttpRequest request = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .uri(URI.create("http://localhost:4567/projects/2/tasks"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
 
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    assertEquals(201 ,response.statusCode());
+
+    // POST("http://localhost:4567/todos/:id/categories") // create a relation between the priority(category) and todolist parameter must be valid
+    String json2 = new StringBuilder()
+            .append("{")
+            .append("\"id\":\"3\"")
+            .append("}").toString();
+
+    HttpRequest request2 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json2))
+            .uri(URI.create("http://localhost:4567/todos/3/categories"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+    assertEquals(201 ,response2.statusCode());
+
+  // DELETE("http://localhost:4567/project/:id/tasks/:id"); // delete  relation between the class(project) and todolist add params
+    HttpRequest request3 = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create("http://localhost:4567/projects/2/tasks/3"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response3 = httpClient.send(request3, HttpResponse.BodyHandlers.ofString());
+    assertEquals(200 ,response3.statusCode());
+
+    // DELETE("http://localhost:4567/todos/:id/categories/:id"); // delete  relation between the class(project) and todolist add params
+    HttpRequest request4 = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create("http://localhost:4567/todos/3/categories/3"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response4 = httpClient.send(request4, HttpResponse.BodyHandlers.ofString());
+    assertEquals(200 ,response4.statusCode());
+
+}
+
+@When("I remove a categorized todo list of a class")
+public void remove_todo_of_a_categorized_class() throws IOException, InterruptedException {
+    String json = new StringBuilder()
+            .append("{")
+            .append("\"id\":\"3\"")
+            .append("}").toString();
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .uri(URI.create("http://localhost:4567/projects/2/tasks"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    assertEquals(201 ,response.statusCode());
+
+    // POST("http://localhost:4567/todos/:id/categories") // create a relation between the priority(category) and todolist parameter must be valid
+    String json2 = new StringBuilder()
+            .append("{")
+            .append("\"id\":\"3\"")
+            .append("}").toString();
+
+    HttpRequest request2 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json2))
+            .uri(URI.create("http://localhost:4567/todos/3/categories"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+    assertEquals(201 ,response2.statusCode());
+
+    // DELETE("http://localhost:4567/project/:id/tasks/:id"); // delete  relation between the class(project) and todolist add params
+    HttpRequest request3 = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create("http://localhost:4567/projects/2/tasks/3"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response3 = httpClient.send(request3, HttpResponse.BodyHandlers.ofString());
+    assertEquals(200 ,response3.statusCode());
+
+    // DELETE("http://localhost:4567/todos/:id/categories/:id"); // delete  relation between the class(project) and todolist add params
+    HttpRequest request4 = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create("http://localhost:4567/todos/3/categories/3"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response4 = httpClient.send(request4, HttpResponse.BodyHandlers.ofString());
+    assertEquals(200 ,response4.statusCode());
+}
+
+@Then("I should remove a todo list of a class") //change this
+public void confirmlist_is_removed() throws IOException, InterruptedException {
+
+ HttpRequest request4 = HttpRequest.newBuilder()
+            .GET()
+            .uri(URI.create("http://localhost:4567/todos/3"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response4 = httpClient.send(request4, HttpResponse.BodyHandlers.ofString());
+    assertEquals(200 ,response4.statusCode());
+
+}
+
+@When("I remove a todo list of a class which doesnt exist")
+public void remove_todo_of_none_class() throws IOException, InterruptedException {
+ // DELETE("http://localhost:4567/todos/:id/projects/:id"); // delete  relation between the class(project) and todolist add params
+    HttpRequest request = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create("http://localhost:4567/todos/3/projects/-1"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    assertNotEquals(200 ,response.statusCode());
+
+}
+
+@Then("I should receive an error message and about removing a todo list of a class")
+public void recieve_error_for_remove_todolist_class() throws IOException, InterruptedException {
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create("http://localhost:4567/todos/3/projects/-1"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    assertNotEquals(200 ,response.statusCode());
+}
 
 
 //___________________________________Remove_task_from_a_course’s_todo_list__________________________________________________
+//Treat todos as todo list, project as tasks, categories as priorities and course
+
+@When("I request to remove a task from a todo list")
+public void remove_task_from_todo() throws IOException, InterruptedException{
+    //POST("http://localhost:4567/todos/:id/tasksof"); // create a relation between the task(project) and todolist
+    String json = new StringBuilder()
+            .append("{")
+            .append("\"id\":\"2\"")
+            .append("}").toString();
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json))
+            .uri(URI.create("http://localhost:4567/todos/3/tasksof"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    assertEquals(201 ,response.statusCode());
+
+    //POST("http://localhost:4567/todos/3/categories"); // create a relation between the course(category) and todolist
+    String json2 = new StringBuilder()
+            .append("{")
+            .append("\"id\":\"6\"") // THE ID
+            .append("}").toString();
+
+//    System.out.println(response3.body().substring(1,10));
+
+
+    HttpRequest request2 = HttpRequest.newBuilder()
+            .POST(HttpRequest.BodyPublishers.ofString(json2))
+            .uri(URI.create("http://localhost:4567/todos/3/categories"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+    assertEquals(201 ,response2.statusCode());
+
+    HttpRequest request3 = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create("http://localhost:4567/todos/3/tasksof/2"))    // PUT ID HERE
+            .setHeader("User-Agent", "Java 11 HttpClient Bot")
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response3 = httpClient.send(request3, HttpResponse.BodyHandlers.ofString());
+    assertEquals(200 ,response3.statusCode());
+
+
+    HttpRequest request4 = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create("http://localhost:4567/todos/3/categories/6"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response4 = httpClient.send(request4, HttpResponse.BodyHandlers.ofString());
+    assertEquals(201 ,response2.statusCode());
+
+
+
+}
+
+@When("I request to remove a course related task from a todo list")
+public void remove_course_task_from_todo() throws IOException, InterruptedException{
+        //POST("http://localhost:4567/todos/:id/tasksof"); // create a relation between the task(project) and todolist
+        String json = new StringBuilder()
+                .append("{")
+                .append("\"id\":\"2\"")
+                .append("}").toString();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(json))
+                .uri(URI.create("http://localhost:4567/todos/3/tasksof"))    // PUT ID HERE
+                .setHeader("User-Agent", "Java 11 HttpClient Bot")
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(201 ,response.statusCode());
+
+        //POST("http://localhost:4567/todos/3/categories"); // create a relation between the course(category) and todolist
+        String json2 = new StringBuilder()
+                .append("{")
+                .append("\"id\":\"6\"") // THE ID
+                .append("}").toString();
+
+//    System.out.println(response3.body().substring(1,10));
+
+
+        HttpRequest request2 = HttpRequest.newBuilder()
+                .POST(HttpRequest.BodyPublishers.ofString(json2))
+                .uri(URI.create("http://localhost:4567/todos/3/categories"))
+                .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response2 = httpClient.send(request2, HttpResponse.BodyHandlers.ofString());
+        assertEquals(201 ,response2.statusCode());
+
+        HttpRequest request3 = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create("http://localhost:4567/todos/3/tasksof/2"))    // PUT ID HERE
+                .setHeader("User-Agent", "Java 11 HttpClient Bot")
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response3 = httpClient.send(request3, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200 ,response3.statusCode());
+
+
+        HttpRequest request4 = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create("http://localhost:4567/todos/3/categories/6"))
+                .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response4 = httpClient.send(request4, HttpResponse.BodyHandlers.ofString());
+        assertEquals(201 ,response2.statusCode());
+
+
+
+    }
+
+@Then("I should remove a task from a course todo list")
+public void confirm_remove_course_task_from_todo() throws IOException, InterruptedException{
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create("http://localhost:4567/categories/6"))
+                .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        assertEquals(200 ,response.statusCode());
+    }
+
+@When("I request to remove a task from a non existing todo list")
+public void remove_course_task_from_none_todo() throws IOException, InterruptedException{
+    HttpRequest request = HttpRequest.newBuilder()
+            .DELETE()
+            .uri(URI.create("http://localhost:4567/projects/2/tasks/-1"))
+            .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+            .header("Content-Type", "application/json")
+            .build();
+
+    HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+    assertNotEquals(200 ,response.statusCode());
+}
+
+@Then("I should receive an error message and about removing a task from a course todo list")
+public void recieve_error_for_remove_course_task_from_none_todo() throws IOException, InterruptedException{
+        HttpRequest request = HttpRequest.newBuilder()
+                .DELETE()
+                .uri(URI.create("http://localhost:4567/projects/2/tasks/-1"))
+                .setHeader("User-Agent", "Java 11 HttpClient Bot") // add request header
+                .header("Content-Type", "application/json")
+                .build();
+
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        assertNotEquals(200 ,response.statusCode());
+    }
+
+
+
 }
