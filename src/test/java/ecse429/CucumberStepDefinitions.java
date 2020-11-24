@@ -66,7 +66,7 @@ private static final HttpClient httpClient = HttpClient.newBuilder()
 @Given("I am a student")
 public void I_am_a_student() throws IOException, InterruptedException {
 // we are all students already
-    assertSame(1,1);
+   // assertSame(true,true);
 }
 
 @Before
